@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <!-- import bootstrap from node -->
+
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- import google font -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- import css -->
+    <link rel="stylesheet" href="styles.css" />
+    <style></style>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-md-6 offset-md-3">
+          <div class="card text-center">
+            <div class="card-header">
+              Water Consumption :
+              <span id="localtime"></span>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Today's Consumption</h5>
+              <p class="card-text" id="sample"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // get localtime ph
+      var d = new Date();
+      var n = d.toLocaleTimeString();
+      document.getElementById("localtime").innerHTML = n;
+
+      var socket = io();
+
+      socket.on("data", function (data) {
+        console.log(data);
+
+        // document.getElementById("sample").style.opacity = data + "%";
+        document.getElementById("sample").innerHTML = data;
+      });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

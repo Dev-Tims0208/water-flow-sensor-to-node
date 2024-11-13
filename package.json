@@ -1,0 +1,10 @@
+{
+    "name": "basic-socket",
+    "version": "0.0.1",
+    "description": "Socket IO",
+    "dependencies": {
+        "bootstrap": "^5.3.3",
+        "serialport": "^9.0.1",
+        "socket.io": "^2.0.4"
+    }
+}

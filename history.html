@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>histopr</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .history-item {
+        border-bottom: 1px solid #ddd;
+        padding: 10px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container mt-4">
+      <div id="data-container" class="list-group"></div>
+    </div>
+
+    <script>
+      fetch("data.json")
+        .then((response) => response.json())
+        .then((data) => {
+          const container = document.getElementById("data-container");
+          const sortedEntries = Object.entries(data).sort(
+            (a, b) => new Date(b[0]) - new Date(a[0])
+          );
+
+          for (const [date, values] of sortedEntries) {
+            const item = document.createElement("div");
+            item.className = "list-group-item history-item pl-4 pr-4";
+
+            const dateElement = document.createElement("h6");
+            dateElement.className = "mb-1 badge badge-sm bg-dark text-light";
+            dateElement.textContent = date;
+            item.appendChild(dateElement);
+
+            const accumulatedValueElement = document.createElement("p");
+            accumulatedValueElement.className = "mb-1";
+            accumulatedValueElement.innerHTML = `Accumulated Value: ${values.accumulatedValue} m³`;
+            item.appendChild(accumulatedValueElement);
+
+            const currentWaterFlowElement = document.createElement("p");
+            currentWaterFlowElement.className = "mb-1";
+            currentWaterFlowElement.innerHTML = `Current Water Flow: ${values.currentWaterFlow} m³/s`;
+            item.appendChild(currentWaterFlowElement);
+
+            container.appendChild(item);
+          }
+        })
+        .catch((error) => console.error("Error fetching data:", error));
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

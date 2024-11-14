@@ -21,12 +21,20 @@
     <div class="container mt-5">
       <div class="row">
         <div class="col-md-6 offset-md-3">
-          <div class="card text-center">
-            <div class="card-header">
+          <div
+            class="card text-center"
+            style="border: 1px solid #fff !important"
+          >
+            <div class="card-header" style="background: transparent !important">
               Water Consumption :
-              <span id="localtime"></span>
+              <span
+                id="localtime"
+                class="badge badge-sm bg-dark text-light"
+              ></span>
             </div>
             <div class="card-body">
+              <h5 class="card-title">Current water flow</h5>
+              <p class="card-text" id="flow"></p>
               <h5 class="card-title">Today's Consumption</h5>
               <p class="card-text" id="sample"></p>
             </div>
@@ -35,18 +43,29 @@
       </div>
     </div>
     <script>
-      // get localtime ph
-      var d = new Date();
-      var n = d.toLocaleTimeString();
+      var socket = io();
+      var _currentDate = new Date();
+      var n = _currentDate.toLocaleDateString();
+      // var localtime to id localtime
       document.getElementById("localtime").innerHTML = n;
 
-      var socket = io();
+      var _key = _currentDate
+        .toISOString()
+        .replace(/T/, " ")
+        .replace(/\..+/, "")
+        .substr(0, 10);
 
-      socket.on("data", function (data) {
+      socket.on("data", function (d) {
+        var data = JSON.parse(d);
         console.log(data);
 
+        var currentDayValues = data[_key];
+
         // document.getElementById("sample").style.opacity = data + "%";
-        document.getElementById("sample").innerHTML = data;
+        document.getElementById("sample").innerHTML =
+          currentDayValues.accumulatedValue + " m<sup>3</sup>";
+        document.getElementById("flow").innerHTML =
+          currentDayValues.currentWaterFlow + " m<sup>3</sup>/s";
       });
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
